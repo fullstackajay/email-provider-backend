@@ -1,0 +1,106 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "Email development on backend",
+	"main": "dist/server.js",
+	"type": "module",
+	"scripts": {
+		"dev": "dotenvx run -f .env.development -- node --import=tsx --watch src/server.ts",
+		"stag": "dotenvx run -f .env.staging -- node dist/server.js",
+		"start": "dotenvx run -f .env.production -- node dist/server.js",
+		"encrypt-env:dev": "dotenvx encrypt -f .env.development",
+		"encrypt-env:stag": "dotenvx encrypt -f .env.staging",
+		"encrypt-env:prod": "dotenvx encrypt -f .env.production",
+		"build": "tsup",
+		"build:watch": "tsup --watch",
+		"typecheck": "tsc --noEmit",
+		"lint": "eslint --cache .",
+		"lint:fix": "eslint --fix",
+		"format:check": "pnpm prettier --check .",
+		"format:fix": "pnpm prettier --write .",
+		"lint:watch": "eslint --watch",
+		"typecheck:watch": "tsc --noEmit --watch",
+		"prepare": "husky",
+		"postinit": "pnpm husky install",
+		"test": "node test/test.js",
+		"commit": "cz",
+		"validate": "pnpm typecheck && pnpm lint && pnpm format --check",
+		"encrypt-envs:hook": "pnpm encrypt-env:prod && pnpm encrypt-env:dev && pnpm encrypt-env:stag && git add .env.production .env.development .env.staging"
+	},
+	"keywords": [],
+	"author": "ajay",
+	"license": "ISC",
+	"packageManager": "pnpm@10.11.0",
+	"lint-staged": {
+		"src/**/*.{js,mjs,cjs,ts}": [
+			"eslint --fix",
+			"prettier --write"
+		],
+		"src/**/*.{json,md,yaml}": [
+			"prettier --write"
+		]
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.8.1",
+		"@commitlint/config-conventional": "^19.8.1",
+		"@eslint/js": "^9.31.0",
+		"@tsconfig/node22": "^22.0.2",
+		"@types/compression": "^1.8.1",
+		"@types/cookie-parser": "^1.4.9",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.3",
+		"@types/hpp": "^0.2.6",
+		"@types/html-to-text": "^9.0.4",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/morgan": "^1.9.10",
+		"@types/ms": "^2.1.0",
+		"@types/node": "^22.16.4",
+		"@types/nodemailer": "^6.4.17",
+		"@typescript-eslint/eslint-plugin": "^8.37.0",
+		"@typescript-eslint/parser": "^8.37.0",
+		"commitizen": "^4.3.1",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^9.31.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
+		"globals": "^16.3.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.2",
+		"prettier": "3.6.2",
+		"tsc-alias": "^1.8.16",
+		"tsup": "^8.5.0",
+		"tsx": "^4.20.3",
+		"typescript": "^5.8.3",
+		"typescript-eslint": "^8.37.0"
+	},
+	"dependencies": {
+		"@dotenvx/dotenvx": "^1.48.0",
+		"better-auth": "^1.3.5",
+		"compression": "^1.8.1",
+		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.5",
+		"express": "^5.1.0",
+		"express-mongo-sanitize": "^2.2.0",
+		"express-rate-limit": "^8.0.1",
+		"express-xss-sanitizer": "^2.0.0",
+		"helmet": "^8.1.0",
+		"hpp": "^0.2.3",
+		"html-to-text": "^9.0.5",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.16.4",
+		"ms": "^2.1.3",
+		"nodemailer": "^7.0.5",
+		"source-map-support": "^0.5.21",
+		"winston": "^3.17.0",
+		"winston-daily-rotate-file": "^5.0.0",
+		"zod": "^4.0.5"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
+	},
+	"engines": {
+		"node": ">= 22.17 < 23"
+	}
+}

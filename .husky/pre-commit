@@ -1,0 +1,12 @@
+# echo "Husky pre-commit hook: Running linters and encrypting envs..."
+
+command -v husky >/dev/null 2>&1 || pnpm husky install
+
+# Run lint-staged.
+pnpm lint-staged
+
+# If lint-staged passed, run the encryption hook.
+pnpm run encrypt-envs:hook
+
+# echo "Husky pre-commit hook: All checks passed. Proceeding with commit."
+
