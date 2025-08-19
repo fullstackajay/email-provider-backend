@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import AppError from '../utils/appError' // Assuming this path is correct
-import { env, NodeEnv } from '@/src/config/env'
+import { isDevelopment, isProduction } from '@/src/config/env'
 
 // --- Define interfaces for known error structures ---
 
@@ -91,9 +91,9 @@ export default (rawErr: PotentialError, _req: Request, res: Response, _next: Nex
 
 	const err = rawErr as HandledError
 
-	if (env.NODE_ENV === NodeEnv.Development) {
+	if (isDevelopment) {
 		sendErrorDev(err, res)
-	} else if (env.NODE_ENV === NodeEnv.Production) {
+	} else if (isProduction) {
 		// Create a new variable for the error. Start with a copy.
 		// The type allows for it to be a general HandledError or specifically an AppError
 		// after transformation.

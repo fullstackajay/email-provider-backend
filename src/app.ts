@@ -6,7 +6,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit, { type RateLimitRequestHandler } from 'express-rate-limit'
 import cookieParser from 'cookie-parser'
-import mongoSanitize from 'express-mongo-sanitize'
+import expressMongoSanitize from '@exortek/express-mongo-sanitize'
 import { xss } from 'express-xss-sanitizer'
 import compression from 'compression'
 import hpp from 'hpp'
@@ -17,12 +17,16 @@ import globalErrorHandler from '@/src/middlewares/globalErrorHandler'
 import AppError from '@/src/utils/appError'
 import userRouter from './routes/user.routes'
 import { auth } from './config/auth'
+import { env } from './config/env'
 
 const app: Express = express()
 
+// Define __dirname for ES Modules
+const __dirname = import.meta.dirname
+
 app.use(
 	cors({
-		origin: 'http://localhost:3000', // Allow requests only from this origin
+		origin: env.SERVER_URL, // Allow requests only from this origin
 		methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
 		credentials: true // Include cookies and other credentials
 	})
@@ -38,14 +42,14 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(helmet())
 
 const limiter: RateLimitRequestHandler = rateLimit({
-	max: 30,
+	max: 300,
 	windowMs: 60 * 60 * 1000,
 	message: 'To many request.'
 })
 
 app.use('/api', limiter)
 
-app.all('/api/auth/*', toNodeHandler(auth))
+app.all('/api/auth/*splat', toNodeHandler(auth)) // Express v5
 
 // This is an middleware.
 // Out of the box exprees does not put body data on the request.
@@ -59,7 +63,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }))
 app.use(cookieParser())
 
 // Data sanitization against NoSQL query injection
-app.use(mongoSanitize())
+app.use(expressMongoSanitize())
 
 // Data sanitization against XSS
 app.use(xss())

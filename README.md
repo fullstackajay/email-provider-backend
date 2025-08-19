@@ -56,74 +56,6 @@ Following these guidelines, whether using the interactive guide or writing manua
 
 ## 📁 Project Structure
 
-```bash
-.
-├── .editorconfig
-├── .env.development
-├── .env.keys
-├── .env.production
-├── .env.staging
-├── .git/
-├── .gitignore
-├── .husky/
-│   ├── _/
-│   ├── commit-msg
-│   └── pre-commit
-├── .prettierignore
-├── .prettierrc
-├── commitlint.config.js
-├── dist/
-│   ├── server.d.ts
-│   ├── server.js
-│   └── server.js.map
-├── eslint.config.mjs
-├── logs/
-│   ├── .gitignore
-│   ├── development.log
-│   └── production.log
-├── nginx/
-│   ├── http.conf
-│   └── https.conf
-├── package.json
-├── pnpm-lock.yaml
-├── public/
-│   └── .gitkeep
-├── README.md
-├── script/
-│   └── .gitkeep
-├── src/
-│   ├── app.ts
-│   ├── config/
-│   │   ├── db.ts
-│   │   ├── env.ts
-│   │   ├── index.ts
-│   │   └── logger.ts
-│   ├── controllers/
-│   │   ├── tour.controllers.ts
-│   │   └── user.controller.ts
-│   ├── middlewares/
-│   │   ├── auth.middleware.ts
-│   │   └── error.middleware.ts
-│   ├── models/
-│   │   ├── tour.model.ts
-│   │   └── user.model.ts
-│   ├── routes/
-│   │   ├── tour.routes.ts
-│   │   └── user.routes.ts
-│   ├── server.ts
-│   ├── services/
-│   │   └── user.service.ts
-│   ├── utils/
-│   │   ├── catch.async.ts
-│   │   └── token.util.ts
-│   └── validators/
-│       └── user.validator.ts
-├── test/
-│   └── test.ts
-├── tree.sh
-├── tsconfig.json
-└── tsup.config.ts
-```
 
 ## What to Do in Your Project Now?
 
@@ -140,3 +72,9 @@ The key takeaway is that your current logger, by outputting structured JSON, is 
 
 pnpm outdated
 pnpm up zod@latest
+
+
+# Websites we development
+
+1. https://mailtrap.io/
+2. Mongodb

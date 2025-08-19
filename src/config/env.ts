@@ -1,7 +1,6 @@
 import { z } from 'zod'
-import ms, { type StringValue } from 'ms'
 
-export enum NodeEnv {
+enum NodeEnv {
 	Development = 'development',
 	Staging = 'staging',
 	Production = 'production'
@@ -9,11 +8,10 @@ export enum NodeEnv {
 
 const nodeEnvValues = [NodeEnv.Development, NodeEnv.Staging, NodeEnv.Production] as const
 
-const msLike = /^[0-9]+(ms|s|m|h|d|w|y)$/
-
 const envSchema = z.object({
 	NODE_ENV: z.enum(nodeEnvValues).default(NodeEnv.Development),
 	PORT: z.coerce.number().int().positive().default(3000),
+	SERVER_URL: z.url(),
 	MONGO_URI: z.url().startsWith('mongodb', { error: 'MONGO_URI must be a valid MongoDB connection string' }),
 	EMAIL_USERNAME: z.string().min(1, 'EMAIL_USERNAME cannot be empty'),
 	EMAIL_PASSWORD: z.string().min(1, 'EMAIL_PASSWORD cannot be empty'),
@@ -23,13 +21,11 @@ const envSchema = z.object({
 	BETTER_AUTH_SECRET: z.string().min(1),
 	BETTER_AUTH_URL: z.url(),
 	JWT_SECRET: z.string().min(10, 'JWT_SECRET cannot be empty and must be at least 10 characters long'),
-	JWT_EXPIRES_IN: z
-		.string()
-		.min(1, 'JWT_EXPIRES_IN cannot be empty')
-		.regex(msLike, "JWT_EXPIRES_IN must be a valid ms time format, e.g., '1d', '3600s'")
-		.refine(val => typeof ms(val as StringValue) === 'number', {
-			message: 'JWT_EXPIRES_IN must be a valid ms time string'
-		})
+	JWT_ACCESS_EXPIRES_IN: z.string().default('15m'),
+	JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
+	GOOGLE_CLIENT_ID: z.string().min(1, 'GOOGLE_CLIENT_ID cannot be empity'),
+	GOOGLE_CLIENT_SECRET: z.string().min(1, 'GOOGLE_CLIENT_SECRET cannot be empity'),
+	JWT_EXPIRES_IN: z.templateLiteral([z.number(), z.enum(['d', 's'])])
 })
 
 const parsedEnv = envSchema.safeParse(process.env)
@@ -41,17 +37,8 @@ if (!parsedEnv.success) {
 
 export type EnvVars = z.infer<typeof envSchema>
 
-const _env = parsedEnv.data
+export const env: EnvVars = parsedEnv.data
 
-type EnvVarsWithMs = Omit<EnvVars, 'JWT_EXPIRES_IN'> & {
-	JWT_EXPIRES_IN: StringValue
-}
-
-export const env: EnvVars = {
-	..._env,
-	JWT_EXPIRES_IN: _env.JWT_EXPIRES_IN as StringValue
-} as EnvVarsWithMs
-
-export const isProduction: boolean = env.NODE_ENV === NodeEnv.Production
 export const isDevelopment: boolean = env.NODE_ENV === NodeEnv.Development
 export const isStaging: boolean = env.NODE_ENV === NodeEnv.Staging
+export const isProduction: boolean = env.NODE_ENV === NodeEnv.Production
