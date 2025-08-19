@@ -56,6 +56,77 @@ Following these guidelines, whether using the interactive guide or writing manua
 
 ## 📁 Project Structure
 
+```bash
+.
+├── .editorconfig
+├── .env.development
+├── .env.keys
+├── .env.production
+├── .env.staging
+├── .husky/
+│   ├── commit-msg
+│   └── pre-commit
+├── commitlint.config.js
+├── eslint.config.mjs
+├── llm.txt
+├── logs/
+│   ├── .gitignore
+│   ├── development.log
+│   └── production.log
+├── nginx/
+│   ├── http.conf
+│   └── https.conf
+├── package.json
+├── pnpm-lock.yaml
+├── public/
+│   └── .gitkeep
+├── README.md
+├── script/
+│   ├── .gitkeep
+│   └── tree.sh
+├── src/
+│   ├── app.ts
+│   ├── config/
+│   │   ├── auth.ts
+│   │   ├── db.ts
+│   │   ├── env.ts
+│   │   └── logger.ts
+│   ├── controllers/
+│   │   └── user.controller.ts
+│   ├── middlewares/
+│   │   ├── auth.middleware.ts
+│   │   ├── error.middleware.ts
+│   │   └── globalErrorHandler.ts
+│   ├── models/
+│   │   └── user.model.ts
+│   ├── routes/
+│   │   └── user.routes.ts
+│   ├── server.ts
+│   ├── services/
+│   │   └── user.service.ts
+│   ├── utils/
+│   │   ├── apiFeatures.ts
+│   │   ├── appError.ts
+│   │   ├── catchAsync.ts
+│   │   ├── email.ts
+│   │   └── token.util.ts
+│   ├── validators/
+│   │   └── user.validator.ts
+│   └── views/
+│       ├── emailVerificationCode.html
+│       ├── passwordReset.html
+│       ├── resetPasswordVerificationCode.html
+│       ├── signInCode.html
+│       └── welcome.html
+├── test/
+│   └── test.ts
+├── tsconfig.json
+├── tsup.config.ts
+└── types/
+    ├── express-xss-sanitizer.d.ts
+    ├── express.d.ts
+    └── README.md
+```
 
 ## What to Do in Your Project Now?
 
@@ -72,7 +143,6 @@ The key takeaway is that your current logger, by outputting structured JSON, is 
 
 pnpm outdated
 pnpm up zod@latest
-
 
 # Websites we development
 
