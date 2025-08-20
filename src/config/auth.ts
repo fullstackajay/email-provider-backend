@@ -3,7 +3,8 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb'
 import { env, isDevelopment } from './env'
 import { nativeDb } from './db'
 import Email from '../utils/email'
-import { emailOTP } from 'better-auth/plugins'
+import { emailOTP, admin } from 'better-auth/plugins'
+import { ac, allRoles } from './permissions'
 import { generateRandomString } from 'better-auth/crypto'
 
 export const auth = betterAuth({
@@ -21,6 +22,12 @@ export const auth = betterAuth({
 	trustedOrigins: [env.SERVER_URL],
 	telemetry: { enabled: false },
 	plugins: [
+		admin({
+			ac, // The access control instance
+			roles: allRoles, // Your custom roles
+			adminRoles: ['SuperAdmin', 'Admin'], // Roles that have admin privileges
+			defaultRole: 'User'
+		}),
 		emailOTP({
 			disableSignUp: true,
 			// This makes the OTP flow the default for all email verifications
@@ -69,11 +76,4 @@ export const auth = betterAuth({
 			clientSecret: env.GOOGLE_CLIENT_SECRET
 		}
 	}
-
-	//       socialProviders: {
-	//     github: {
-	//       clientId: process.env.GITHUB_CLIENT_ID as string,
-	//       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-	//     },
-	//   },
 })
